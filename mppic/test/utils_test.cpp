@@ -254,18 +254,13 @@ TEST(UtilsTests, findPathCosts)
     std::nullopt, std::nullopt};  /// Caution, keep references
 
   // Test not set if already set, should not change
-  data.path_pts_valid->resize(10);
+  data.path_pts_valid = std::vector<bool>(10, false);
+  for (unsigned int i = 0; i != 10; i++) {
+    (*data.path_pts_valid)[i] = false;
+  }
+  EXPECT_TRUE(data.path_pts_valid);
   setPathCostsIfNotSet(data, nullptr);
-  EXPECT_EQ(data.path_pts_valid->size(), 109u);
-
-
-  CriticData data2 =
-  {state, generated_trajectories, path, costs, model_dt, false, nullptr, nullptr,
-    std::nullopt, std::nullopt};  /// Caution, keep references
-
-  // Test if not set with no valid data does nothing and doesn't crash
-  setPathCostsIfNotSet(data2, nullptr);
-  EXPECT_FALSE(data2.path_pts_valid.has_value());
+  EXPECT_EQ(data.path_pts_valid->size(), 10u);
 
   CriticData data3 =
   {state, generated_trajectories, path, costs, model_dt, false, nullptr, nullptr,
@@ -299,12 +294,8 @@ TEST(UtilsTests, findPathCosts)
   // This should be evaluated and have real outputs now
   setPathCostsIfNotSet(data3, costmap_ros);
   EXPECT_TRUE(data3.path_pts_valid.has_value());
-  for (unsigned int i = 0; i != path.x.shape(0); i++) {
-    if () {
-      EXPECT_FALSE((*data3.path_pts_valid)[i]);
-    } else if () {
-      EXPECT_FALSE((*data3.path_pts_valid)[i]);
-    } else if () {
+  for (unsigned int i = 0; i != path.x.shape(0) - 1; i++) {
+    if (i == 1 || i == 10) {
       EXPECT_FALSE((*data3.path_pts_valid)[i]);
     } else {
       EXPECT_TRUE((*data3.path_pts_valid)[i]);
