@@ -1157,9 +1157,9 @@ void
 AmclNode::mapReceived(const nav_msgs::msg::OccupancyGrid::SharedPtr msg)
 {
   RCLCPP_DEBUG(get_logger(), "AmclNode: A new map was received.");
-  if (first_map_only_ && first_map_received_) {
-    return;
-  }
+  //if (first_map_only_ && first_map_received_) {
+  //  return;
+  //}
   handleMapMessage(*msg);
   first_map_received_ = true;
 }
